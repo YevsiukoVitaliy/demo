@@ -1,15 +1,15 @@
-require("dotenv").config();
+require('dotenv').config();
 const host = process.env.HOST;
 const port = process.env.PORT;
 
-const express = require("express");
+const express = require('express');
 const app = express();
-const cors = require("cors");
+const cors = require('cors');
 const fileUpload = require('express-fileupload');
 const path = require('path');
 
 const sequelize = require('./db/db');
-const models = require("./models/models");
+const models = require('./models/models');
 
 const router = require('./routes/index');
 const errorHandler = require('./middleware/ErrorHandlingMiddleware');
@@ -24,19 +24,16 @@ app.use('/api', router);
 //Handler error, last middleware
 app.use(errorHandler);
 
-
 const start = async () => {
-   try {
-        await sequelize.authenticate();
-        await sequelize.sync();
+  try {
+    await sequelize.authenticate();
+    await sequelize.sync();
 
-        app.listen(port, () => {
-            console.log(`App listening at http://${host}:${port}`);
-        });
-   } catch (e) {
-       console.error(e);
-   }
-}
-start().then(r => console.log('Starting...'));
-
-
+    app.listen(port, () => {
+      console.log(`App listening at http://${host}:${port}`);
+    });
+  } catch (e) {
+    console.error(e);
+  }
+};
+start().then(() => console.log('Starting...'));
