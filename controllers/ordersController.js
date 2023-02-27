@@ -1,5 +1,5 @@
 const {Orders, OrderDevice, Device, Brand, Type} = require('./../models/models');
-const ApiError = require('../error/apiError');
+const ApiError = require('../error/ApiError');
 const jwt = require('jsonwebtoken');
 
 class OrdersController {

@@ -9,7 +9,7 @@ const {
   OrderDevice,
   BasketDevice,
 } = require('../models/models');
-const apiError = require('../error/ApiError');
+const ApiError = require('../error/ApiError');
 
 class DeviceController {
   async create(req, res, next) {
@@ -39,7 +39,7 @@ class DeviceController {
 
       return res.json(device);
     } catch (e) {
-      next(apiError.badRequest(e.message));
+      next(ApiError.badRequest(e.message));
     }
   }
 
@@ -83,7 +83,7 @@ class DeviceController {
       }
       return res.json(devices);
     } catch (e) {
-      next(apiError.badRequest(e.message));
+      next(ApiError.badRequest(e.message));
     }
   }
 
@@ -150,7 +150,7 @@ class DeviceController {
         return res.json(devices);
       }
     } catch (e) {
-      next(apiError.badRequest(e.message));
+      next(ApiError.badRequest(e.message));
     }
   }
 
@@ -167,7 +167,7 @@ class DeviceController {
       });
       return res.json(devices);
     } catch (e) {
-      next(apiError.badRequest(e.message));
+      next(ApiError.badRequest(e.message));
     }
   }
 
