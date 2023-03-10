@@ -7,6 +7,7 @@ const app = express();
 const cors = require('cors');
 const fileUpload = require('express-fileupload');
 const path = require('path');
+const https = require('https');
 
 const sequelize = require('./db/db');
 const models = require('./models/models');
@@ -17,7 +18,14 @@ const errorHandler = require('./middleware/ErrorHandlingMiddleware');
 //middleware
 app.use(cors());
 app.use(express.json());
-app.use(express.static(path.resolve(__dirname, 'static')));
+app.get('/remote-file', (req, res) => {
+  https.get(
+    'https://addons-sso.heroku.com/apps/f5a78384-5d9b-4141-bac0-8055b8118798/addons/6f45a1cd-25a9-4014-a594-a9a5d17239e3',
+    remoteRes => {
+      remoteRes.pipe(res);
+    }
+  );
+});
 app.use(fileUpload({}));
 app.use('/api', router);
 
