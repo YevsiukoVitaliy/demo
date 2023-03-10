@@ -10,42 +10,20 @@ const {
   BasketDevice,
 } = require('../models/models');
 const ApiError = require('../error/ApiError');
-const axios = require('axios');
-const FormData = require('form-data');
-const fs = require('fs');
-const AWS = require('aws-sdk');
-const s3 = new AWS.S3({
-  accessKeyId: 'AKIA37SVVXBHYRDFICX7',
-  secretAccessKey: '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',
-});
 
 class DeviceController {
   async create(req, res, next) {
     try {
-      const { name, price, brandId, typeId, info } = req.body;
+      let { name, price, brandId, typeId, info } = req.body;
       const { img } = req.files;
-
-      const formData = new FormData();
-      formData.append('img', fs.createReadStream(img.path));
-
-      const config = {
-        headers: {
-          'content-type': `multipart/form-data; boundary=${formData.getBoundary()}`,
-        },
-      };
-
-      const response = await axios.post(
-        'https://addons-sso.heroku.com/apps/f5a78384-5d9b-4141-bac0-8055b8118798/addons/6f45a1cd-25a9-4014-a594-a9a5d17239e3',
-        formData,
-        config
-      );
-
+      let fileName = uuid.v4() + '.jpg';
+      img.mv(path.resolve(__dirname, '..', 'static', fileName));
       const device = await Device.create({
         name,
         price,
         brandId,
         typeId,
-        img: response.data.fileName,
+        img: fileName,
       });
 
       if (info) {
@@ -229,35 +207,10 @@ class DeviceController {
           if (req.files) {
             const { img } = req.files;
             const type = img.mimetype.split('/')[1];
-            const fileName = uuid.v4() + `.${type}`;
-            const params = {
-              Bucket: 'your-bucket-name',
-              Key: fileName,
-              Body: img.data,
-              ACL: 'public-read', // make the file publicly accessible
-            };
-            s3.upload(params, (err, data) => {
-              if (err) {
-                console.error(err);
-                return res.status(500).send('Error uploading file to S3');
-              }
-              newVal.img = data.Location;
-              // save newVal to the database
-            });
+            let fileName = uuid.v4() + `.${type}`;
+            img.mv(path.resolve(__dirname, '..', 'static', fileName));
+            newVal.img = fileName;
           }
-
-          // if (req.files) {
-          //   const { img } = req.files;
-          //   const type = img.mimetype.split('/')[1];
-          //   let fileName = uuid.v4() + `.${type}`;
-          //   img.mv(
-          //     path.resolve(
-          //       'https://addons-sso.heroku.com/apps/f5a78384-5d9b-4141-bac0-8055b8118798/addons/6f45a1cd-25a9-4014-a594-a9a5d17239e3',
-          //       fileName
-          //     )
-          //   );
-          //   newVal.img = fileName;
-          // }
 
           if (info) {
             const parseInfo = JSON.parse(info);
