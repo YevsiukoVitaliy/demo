@@ -9,11 +9,7 @@ const {
   OrderDevice,
   BasketDevice,
 } = require('../models/models');
-<<<<<<< HEAD
-const apiError = require('./../error/apiError');
-=======
 const ApiError = require('../error/ApiError');
->>>>>>> 9ade1c4d3f73ca7a2bd905eb82e8e26cc926d3ff
 
 class DeviceController {
   async create(req, res, next) {
