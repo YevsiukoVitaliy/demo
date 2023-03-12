@@ -28,6 +28,7 @@ class TypeController {
         } catch (e) {
             return res.json(e);
         }
-    }z
+    }
+}
 
 module.exports = new TypeController();

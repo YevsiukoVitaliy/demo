@@ -27,7 +27,6 @@ class BranController {
         }
       });
     } catch (e) {
-      z;
       return res.json(e);
     }
   }
