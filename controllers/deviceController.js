@@ -9,7 +9,11 @@ const {
   OrderDevice,
   BasketDevice,
 } = require('../models/models');
+<<<<<<< HEAD
 const apiError = require('./../error/apiError');
+=======
+const ApiError = require('../error/ApiError');
+>>>>>>> 9ade1c4d3f73ca7a2bd905eb82e8e26cc926d3ff
 
 class DeviceController {
   async create(req, res, next) {
@@ -39,7 +43,11 @@ class DeviceController {
 
       return res.json(device);
     } catch (e) {
+<<<<<<< HEAD
       next(apiError.badRequest(e.message));
+=======
+      next(ApiError.badRequest(e.message));
+>>>>>>> 9ade1c4d3f73ca7a2bd905eb82e8e26cc926d3ff
     }
   }
 
@@ -83,7 +91,11 @@ class DeviceController {
       }
       return res.json(devices);
     } catch (e) {
+<<<<<<< HEAD
       next(apiError.badRequest(e.message));
+=======
+      next(ApiError.badRequest(e.message));
+>>>>>>> 9ade1c4d3f73ca7a2bd905eb82e8e26cc926d3ff
     }
   }
 
@@ -150,7 +162,11 @@ class DeviceController {
         return res.json(devices);
       }
     } catch (e) {
+<<<<<<< HEAD
       next(apiError.badRequest(e.message));
+=======
+      next(ApiError.badRequest(e.message));
+>>>>>>> 9ade1c4d3f73ca7a2bd905eb82e8e26cc926d3ff
     }
   }
 
@@ -167,7 +183,11 @@ class DeviceController {
       });
       return res.json(devices);
     } catch (e) {
+<<<<<<< HEAD
       next(apiError.badRequest(e.message));
+=======
+      next(ApiError.badRequest(e.message));
+>>>>>>> 9ade1c4d3f73ca7a2bd905eb82e8e26cc926d3ff
     }
   }
 

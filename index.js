@@ -36,4 +36,8 @@ const start = async () => {
     console.error(e);
   }
 };
+<<<<<<< HEAD
 start().then(r => console.log('Starting...'));
+=======
+start().then(() => console.log('Starting...'));
+>>>>>>> 9ade1c4d3f73ca7a2bd905eb82e8e26cc926d3ff
