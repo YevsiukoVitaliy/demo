@@ -92,7 +92,7 @@ class DeviceController {
       let { limit, page, name, filter } = req.query;
 
       page = page || 1;
-      limit = limit || 7;
+      limit = limit || 9;
       let offset = page * limit - limit;
       if (filter === 'All') {
         const devices = await Device.findAndCountAll({
