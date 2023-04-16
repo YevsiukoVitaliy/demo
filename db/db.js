@@ -10,14 +10,3 @@ module.exports = new Sequelize(
     port: process.env.PORT_DB,
   }
 );
-
-// module.exports = new Sequelize(process.env.DATABASE_URL, {
-//   dialect: 'postgres',
-//   protocol: 'postgres',
-//   dialectOptions: {
-//     ssl: {
-//       require: true,
-//       rejectUnauthorized: false,
-//     },
-//   },
-// });

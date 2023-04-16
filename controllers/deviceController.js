@@ -87,6 +87,57 @@ class DeviceController {
     }
   }
 
+  async getSearchAllDeviceByNameBrandType(req, res, next) {
+    try {
+      let { limit, page, name, brand, type } = req.query;
+
+      page = page || 1;
+      limit = limit || 9;
+      let offset = page * limit - limit;
+
+      const where = {};
+      if (name) {
+        where.name = {
+          [Op.iLike]: `%${name}%`,
+        };
+      }
+      if (brand && brand !== 'All') {
+        where.brandId = brand;
+      }
+      if (type && type !== 'All') {
+        where.typeId = type;
+      }
+      const order = [];
+      if (type && type !== 'All') {
+        order.push(['name', 'ASC']);
+      }
+      if (brand && brand !== 'All') {
+        order.push([Brand, 'name', 'ASC']);
+      }
+
+      const devices = await Device.findAndCountAll({
+        where,
+        include: [
+          {
+            model: Brand,
+            attributes: ['id', 'name'],
+          },
+          {
+            model: Type,
+            attributes: ['id', 'name'],
+          },
+        ],
+        order,
+        limit,
+        offset,
+      });
+
+      return res.json(devices);
+    } catch (e) {
+      next(ApiError.badRequest(e.message));
+    }
+  }
+
   async getSearchAllDeviceByName(req, res, next) {
     try {
       let { limit, page, name, filter } = req.query;
