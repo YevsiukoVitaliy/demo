@@ -57,6 +57,8 @@ const Orders = sequelize.define('orders', {
   selectedCity: { type: DataTypes.STRING(255), allowNull: false },
   selectedWarehouse: { type: DataTypes.STRING(255), allowNull: false },
   userId: { type: DataTypes.INTEGER, allowNull: true },
+  fullName: { type: DataTypes.STRING(255), allowNull: false },
+  comments: { type: DataTypes.TEXT, allowNull: true },
 });
 
 const OrderDevice = sequelize.define('order_device', {
