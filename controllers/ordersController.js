@@ -152,7 +152,7 @@ class OrdersController {
 
           for (let device of devices) {
             await Device.findOne({
-              attributes: ['name', 'img', 'price'],
+              attributes: ['name', 'img', 'price', 'quantity'],
               where: { id: device.deviceId },
               include: [
                 {

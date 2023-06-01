@@ -14,7 +14,7 @@ const ApiError = require('../error/ApiError');
 class DeviceController {
   async create(req, res, next) {
     try {
-      let { name, price, brandId, typeId, info } = req.body;
+      let { name, price, brandId, typeId, info, quantity } = req.body;
       const { img } = req.files;
       let fileName = uuid.v4() + '.jpg';
       img.mv(path.resolve(__dirname, '..', 'static', fileName));
@@ -24,6 +24,7 @@ class DeviceController {
         brandId,
         typeId,
         img: fileName,
+        quantity,
       });
 
       if (info) {
@@ -95,7 +96,11 @@ class DeviceController {
       limit = limit || 9;
       let offset = page * limit - limit;
 
-      const where = {};
+      const where = {
+        quantity: {
+          [Op.gt]: 0, // Add this condition for quantity greater than 0
+        },
+      };
       if (name) {
         where.name = {
           [Op.iLike]: `%${name}%`,
@@ -147,7 +152,7 @@ class DeviceController {
       let offset = page * limit - limit;
       if (filter === 'All') {
         const devices = await Device.findAndCountAll({
-          attributes: ['name', 'price', 'img', 'id'],
+          attributes: ['name', 'price', 'img', 'id', 'quantity'],
           where: {
             name: {
               [Op.like]: `%${name}%`,
@@ -170,7 +175,15 @@ class DeviceController {
         return res.json(devices);
       } else {
         const devices = await Device.findAndCountAll({
-          attributes: ['name', 'price', 'img', 'id', 'brandId', 'typeId'],
+          attributes: [
+            'name',
+            'price',
+            'img',
+            'id',
+            'brandId',
+            'typeId',
+            'quantity',
+          ],
           where: {
             name: {
               [Op.like]: `%${name}%`,
@@ -245,7 +258,7 @@ class DeviceController {
   async update(req, res) {
     try {
       const { id } = req.params;
-      const { brandId, typeId, name, price, info } = req.body;
+      const { brandId, typeId, name, price, info, quantity } = req.body;
 
       await Device.findOne({ where: { id } }).then(async data => {
         if (data) {
@@ -254,7 +267,7 @@ class DeviceController {
           typeId ? (newVal.typeId = typeId) : false;
           name ? (newVal.name = name) : false;
           price ? (newVal.price = price) : false;
-
+          quantity ? (newVal.quantity = quantity) : false;
           if (req.files) {
             const { img } = req.files;
             const type = img.mimetype.split('/')[1];
