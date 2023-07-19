@@ -32,15 +32,24 @@ class UserController {
     const { email, password } = req.body;
     const user = await User.findOne({ where: { email } });
     if (!user) {
-      return next(ApiError.internal("User with this name didn't find"));
+      return next(ApiError.internal("User with this email doesn't exist"));
     }
-    let comparePassword = bcrypt.compareSync(password, user.password);
-    if (!comparePassword) {
-      return next(ApiError.internal('Not valid password'));
+    if (user.password === null) {
+      const hashPassword = await bcrypt.hash(password, 5);
+      await user.update({ password: hashPassword });
+    } else {
+      const comparePassword = bcrypt.compareSync(password, user.password);
+      if (!comparePassword) {
+        return next(ApiError.internal('Not valid password'));
+      }
     }
-    const token = generateJwt(user.id, user.email, user.role);
-    return res.json({ token });
+    const { id,  role } = user; // Получаем только необходимые поля, исключая пароль
+    delete user.password; // Исключаем свойство password из объекта пользователя
+    const token = generateJwt(id, email, role);
+    return res.json({ user, token }); // Отправляем пользовательские данные и токен в ответе
   }
+  
+
 
   async check(req, res) {
     const token = generateJwt(req.user.id, req.user.email, req.user.role);
