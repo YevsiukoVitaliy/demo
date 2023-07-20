@@ -6,8 +6,8 @@ const { User, Basket } = require("./models/models");
 const jwt = require('jsonwebtoken');
 
 
-const GOOGLE_CLIENT_ID = "1075234256896-8jr9mpntls87d7kafmbs7jgm6qve49il.apps.googleusercontent.com";
-const GOOGLE_CLIENT_SECRET = "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";
+const GOOGLE_CLIENT_ID = "219729734091-43l16e04kigm8susjpfifbc92q5su4k1.apps.googleusercontent.com";
+const GOOGLE_CLIENT_SECRET = "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";
 const MICROSOFT_CLIENT_ID = "22a8d34f-e1e5-4ed1-8ce4-809377001a33";
 const MICROSOFT_CLIENT_SECRET = "Gyr8Q~2UozcGrc0StXbpo2TeBGpglPTUxlgtLb6U";
 const FACEBOOK_APP_ID = "207933322242984";

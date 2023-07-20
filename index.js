@@ -1,3 +1,4 @@
+
 const cookieSession = require("cookie-session");
 const express = require('express');
 const cors = require('cors');
@@ -6,7 +7,6 @@ const passportSetup = require("./passport");
 const passport = require("passport");
 const fileUpload = require('express-fileupload');
 const path = require('path');
-const fs = require('fs'); // Import the fs module to read the challenge file
 
 const sequelize = require('./db/db');
 const models = require('./models/models');
@@ -17,12 +17,16 @@ const app = express();
 const host = process.env.HOST;
 const port = process.env.PORT;
 
+
 app.use(
-  cookieSession({ name: "session", keys: [process.env.SECRET_KEY], maxAge: 24 * 60 * 60 * 100 })
+  cookieSession({ name: "session", keys: [process.env.SECRET_KEY ], maxAge: 24 * 60 * 60 * 100 })
 );
+
 
 app.use(passport.initialize());
 app.use(passport.session());
+
+
 
 app.use(
   cors({
@@ -32,6 +36,7 @@ app.use(
   })
 );
 
+
 app.use("/auth", authRoute);
 
 // middleware
@@ -39,25 +44,6 @@ app.use(express.json());
 app.use(express.static(path.resolve(__dirname, 'static')));
 app.use(fileUpload({}));
 app.use('/api', router);
-
-// Handler for ACME challenge
-app.get('/.well-known/acme-challenge/:acmeToken', (req, res) => {
-  const acmeToken = req.params.acmeToken;
-  // Replace this line with the actual path to the directory where you have stored the challenge files
-  const acmeChallengeDir = '/path/to/acme-challenge-directory/';
-  const fs = require('fs');
-  
-  // Read the challenge file
-  fs.readFile(`${acmeChallengeDir}${acmeToken}`, 'utf8', (err, data) => {
-    if (err) {
-      // If there was an error reading the file (e.g., file not found), send a 404 status
-      return res.status(404).send('Challenge file not found');
-    }
-    // Send the challenge file contents as the response
-    res.send(data);
-  });
-});
-
 
 
 // Handler error, last middleware
