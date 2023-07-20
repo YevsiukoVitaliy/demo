@@ -1,18 +1,25 @@
 const router = require("express").Router();
 const passport = require("passport");
-
+const { generateJwt } = require("../passport");
 
 router.get("/login/success", (req, res) => {
   if (req.user) {
-    const { password, ...userWithoutPassword } = req.user; 
+    const token = generateJwt(req.user.id, req.user.email, req.user.role);
+
+    const { password, ...userWithoutPassword } = req.user;
     res.status(200).json({
       success: true,
       message: "successfull",
-      user: userWithoutPassword, 
+      user: userWithoutPassword,
+      token: token, 
+    });
+  } else {
+    res.status(401).json({
+      success: false,
+      message: "failure",
     });
   }
 });
-
 
 router.get("/login/failed", (req, res) => {
   res.status(401).json({
@@ -56,4 +63,4 @@ router.get(
   })
 );
 
-module.exports = router
+module.exports = router;

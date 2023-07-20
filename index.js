@@ -19,7 +19,7 @@ const port = process.env.PORT;
 
 
 app.use(
-  cookieSession({ name: "session", keys: ["lama"], maxAge: 24 * 60 * 60 * 100 })
+  cookieSession({ name: "session", keys: [process.env.SECRET_KEY], maxAge: 24 * 60 * 60 * 100 })
 );
 
 
@@ -55,7 +55,7 @@ const start = async () => {
     await sequelize.sync();
 
     app.listen(port, () => {
-      console.log(`App listening at http://${host}:${port}`);
+      console.log(process.env.CLIENT_URL);
     });
   } catch (e) {
     console.error(e);
