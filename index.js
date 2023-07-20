@@ -43,19 +43,15 @@ app.use('/api', router);
 // Handler for ACME challenge
 app.get('/.well-known/acme-challenge/:acmeToken', (req, res) => {
   const acmeToken = req.params.acmeToken;
-  const challengeFile = path.join(__dirname, '.well-known', 'acme-challenge', acmeToken);
-  
-  // Read the contents of the challenge file
-  fs.readFile(challengeFile, 'utf8', (err, data) => {
-    if (err) {
-      console.error(err);
-      res.status(500).send('Error reading challenge file');
-    } else {
-      // Send the challenge file content as the response
-      res.send(data);
-    }
-  });
+  // You need to read the contents of the challenge file and send it as the response
+  // The file should be located in the directory specified in the Certbot command
+  // For example, if the challenge file for token 'abc123' is located at '/path/to/acme-challenge-directory/abc123',
+  // you should read the contents of that file and send it as the response.
+  // Here's a basic example assuming the challenge file is a text file:
+  const challengeFileContent = 'contents-of-your-challenge-file-goes-here';
+  res.send(challengeFileContent);
 });
+
 
 // Handler error, last middleware
 app.use(errorHandler);
