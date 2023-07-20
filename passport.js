@@ -8,8 +8,8 @@ const jwt = require('jsonwebtoken');
 
 const GOOGLE_CLIENT_ID = "1075234256896-8jr9mpntls87d7kafmbs7jgm6qve49il.apps.googleusercontent.com";
 const GOOGLE_CLIENT_SECRET = "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";
-const MICROSOFT_CLIENT_ID = "d2efcc8a-d865-4cf2-bd3b-ae4aa58d81bb";
-const MICROSOFT_CLIENT_SECRET = "7Nb8Q~ZvW182hwrOUTwRnhh2U68CNyESpkhl.c2Z";
+const MICROSOFT_CLIENT_ID = "Gyr8Q~2UozcGrc0StXbpo2TeBGpglPTUxlgtLb6U";
+const MICROSOFT_CLIENT_SECRET = "88fac36b-d40a-4e14-bd0d-03958ad0a9af";
 const FACEBOOK_APP_ID = "207933322242984";
 const FACEBOOK_APP_SECRET = "00243e005980a2228a767f32b1a81313";
 const SECRET_KEY = process.env.SECRET_KEY 
