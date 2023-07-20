@@ -1,4 +1,3 @@
-
 const cookieSession = require("cookie-session");
 const express = require('express');
 const cors = require('cors');
@@ -17,16 +16,12 @@ const app = express();
 const host = process.env.HOST;
 const port = process.env.PORT;
 
-
 app.use(
   cookieSession({ name: "session", keys: [process.env.SECRET_KEY ], maxAge: 24 * 60 * 60 * 100 })
 );
 
-
 app.use(passport.initialize());
 app.use(passport.session());
-
-
 
 app.use(
   cors({
@@ -36,7 +31,6 @@ app.use(
   })
 );
 
-
 app.use("/auth", authRoute);
 
 // middleware
@@ -45,6 +39,17 @@ app.use(express.static(path.resolve(__dirname, 'static')));
 app.use(fileUpload({}));
 app.use('/api', router);
 
+// Handler for ACME challenge
+app.get('/.well-known/acme-challenge/:acmeToken', (req, res) => {
+  const acmeToken = req.params.acmeToken;
+  // You need to read the contents of the challenge file and send it as the response
+  // The file should be located in the directory specified in the Certbot command
+  // For example, if the challenge file for token 'abc123' is located at '/path/to/acme-challenge-directory/abc123',
+  // you should read the contents of that file and send it as the response.
+  // Here's a basic example assuming the challenge file is a text file:
+  const challengeFileContent = 'contents-of-your-challenge-file-goes-here';
+  res.send(challengeFileContent);
+});
 
 // Handler error, last middleware
 app.use(errorHandler);
