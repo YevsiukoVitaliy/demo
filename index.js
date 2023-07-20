@@ -19,7 +19,7 @@ const port = process.env.PORT;
 
 
 app.use(
-  cookieSession({ name: "session", keys: [process.env.SECRET_KEY], maxAge: 24 * 60 * 60 * 100 })
+  cookieSession({ name: "session", keys: [process.env.SECRET_KEY ], maxAge: 24 * 60 * 60 * 100 })
 );
 
 
