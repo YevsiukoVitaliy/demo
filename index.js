@@ -47,8 +47,13 @@ const start = async () => {
   try {
     await sequelize.authenticate();
     await sequelize.sync();
+
+    // Создаем экземпляр прокси-сервера для обработки HTTP-запросов
+    const proxyHttp = httpProxy.createProxyServer();
+
+    // Проксируем только HTTP-запросы на ваше приложение через HTTP
     app.all('*', (req, res) => {
-      proxy.web(req, res, { target: 'https://nodejsclusters-115724-0.cloudclusters.net' });
+      proxyHttp.web(req, res, { target: 'http://nodejsclusters-115724-0.cloudclusters.net' });
     });
 
     httpServer.listen(port, () => {
