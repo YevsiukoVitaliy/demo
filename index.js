@@ -43,8 +43,8 @@ app.use('/api', router);
 app.use(errorHandler);
 
 const sslOptions = {
-  key: fs.readFileSync(path.join(__dirname, 'cert', 'key.pem')), // Provide the path to your private key file
-  cert: fs.readFileSync(path.join(__dirname, 'cert', 'cert.pem')), // Provide the path to your SSL certificate file
+  key: fs.readFileSync(path.join(__dirname, 'cert', 'key.pem')), 
+  cert: fs.readFileSync(path.join(__dirname, 'cert', 'cert.pem')), 
 };
 
 const httpsServer = https.createServer(sslOptions, app);
@@ -54,12 +54,13 @@ const start = async () => {
     await sequelize.authenticate();
     await sequelize.sync();
 
-    httpsServer.listen(port, () => {
-      console.log(`Сервер запущен на порту ${port}`);
+    httpsServer.listen(port, host, () => {
+      console.log(`Сервер работает на хосте ${httpsServer.address().address}`);
     });
   } catch (e) {
     console.error(e);
   }
 };
+
 
 start().then(() => console.log('Starting...'));
