@@ -25,7 +25,7 @@ passport.use(
     {
       clientID: GOOGLE_CLIENT_ID,
       clientSecret: GOOGLE_CLIENT_SECRET,
-      callbackURL: "/auth/google/callback",
+      callbackURL: "http://nodejsclusters-115724-0.cloudclusters.net/auth/google/callback",
     },
     async (accessToken, refreshToken, profile, done) => {
       const email = profile.emails[0].value;
@@ -52,7 +52,7 @@ passport.use(
     {
       clientID: MICROSOFT_CLIENT_ID,
       clientSecret: MICROSOFT_CLIENT_SECRET,
-      callbackURL: "/auth/microsoft/callback",
+      callbackURL: "http://nodejsclusters-115724-0.cloudclusters.net/auth/microsoft/callback",
       scope: ['user.read'],
     },
     async (accessToken, refreshToken, profile, done) => { 
@@ -80,7 +80,7 @@ passport.use(
     {
       clientID: FACEBOOK_APP_ID,
       clientSecret: FACEBOOK_APP_SECRET,
-      callbackURL: "/auth/facebook/callback",
+      callbackURL: "http://nodejsclusters-115724-0.cloudclusters.net/auth/facebook/callback",
     },
     async (accessToken, refreshToken, profile, done) => {
       const email = profile.emails[0].value;
