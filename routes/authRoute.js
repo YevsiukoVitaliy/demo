@@ -2,24 +2,33 @@ const router = require("express").Router();
 const passport = require("passport");
 const { generateJwt } = require("../passport");
 
-router.get("/login/success", (req, res) => {
-  if (req.user) {
-    const token = generateJwt(req.user.id, req.user.email, req.user.role);
+router.get("/login/success", async (req, res) => {
+  try {
+    if (req.user) {
+      const token = await generateJwt(req.user.id, req.user.email, req.user.role);
 
-    const { password, ...userWithoutPassword } = req.user;
-    res.status(200).json({
-      success: true,
-      message: "successfull",
-      user: userWithoutPassword,
-      token: token, 
-    });
-  } else {
-    res.status(401).json({
+      const { password, ...userWithoutPassword } = req.user;
+      res.status(200).json({
+        success: true,
+        message: "successfull",
+        user: userWithoutPassword,
+        token: token, 
+      });
+    } else {
+      res.status(401).json({
+        success: false,
+        message: "failure",
+      });
+    }
+  } catch (error) {
+    console.error("Error generating JWT:", error);
+    res.status(500).json({
       success: false,
-      message: "failure",
+      message: "Internal server error",
     });
   }
 });
+
 
 router.get("/login/failed", (req, res) => {
   res.status(401).json({

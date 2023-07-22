@@ -1,4 +1,15 @@
-node_modules
-static
-/migrations
-/config
+# Ignore Docker related files
+Dockerfile
+docker-compose.yml
+
+# Ignore node_modules directory
+node_modules/
+
+# Ignore static directory
+/static/
+
+# Ignore migrations directory
+/migrations/
+
+# Ignore config directory
+/config/
