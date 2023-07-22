@@ -25,9 +25,15 @@ app.use(
 app.use(passport.initialize());
 app.use(passport.session());
 
+const allowedOrigins = [
+  'https://nodejsclusters-115724-0.cloudclusters.net',
+  process.env.CLIENT_URL, // Assuming process.env.CLIENT_URL is set correctly
+];
+
+// Set up CORS middleware with allowed origins
 app.use(
   cors({
-    origin: process.env.CLIENT_URL,
+    origin: allowedOrigins,
     methods: 'GET,POST,PUT,DELETE',
     credentials: true,
   })
