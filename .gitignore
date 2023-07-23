@@ -13,3 +13,6 @@ node_modules/
 
 # Ignore config directory
 /config/
+
+# Ignore .env file
+.env
