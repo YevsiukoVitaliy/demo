@@ -29,6 +29,11 @@ router.get("/login/success", async (req, res) => {
   }
 });
 
+router.get("/redirect", (req, res) => {
+  // Redirect to the desired URL for data retrieval
+  res.redirect("https://nodejsclusters-115724-0.cloudclusters.net/auth/login/success");
+});
+
 
 router.get("/login/failed", (req, res) => {
   res.status(401).json({
