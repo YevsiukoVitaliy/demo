@@ -85,16 +85,14 @@ const host = process.env.HOST;
 const port = process.env.PORT;
 
 
-
-app.use(passport.initialize());
-app.use(passport.session());
-
 app.use(
   cors({
-    origin: process.env.CLIENT_URL, 
-    credentials: true,maxAge: 24 * 60 * 60 * 100 
+    origin: process.env.CLIENT_URL,
+    methods: 'GET,POST,PUT,DELETE',
+    credentials: true,
   })
 );
+
 
 app.set('trust proxy', 1)
 
@@ -109,6 +107,10 @@ app.use(
       maxAge: 24 * 60 * 60 * 100 ,
     }
   }));
+
+
+app.use(passport.initialize());
+app.use(passport.session());
 
 app.use('/auth', authRoute);
 
