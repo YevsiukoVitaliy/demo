@@ -8,7 +8,20 @@ router.get("/redirect", (req, res) => {
     const userParam = encodeURIComponent(JSON.stringify(req.user));
 
     // Redirect to the /login/success route with the userParam query parameter
-    res.redirect(`https://nodejsclusters-115724-0.cloudclusters.net/auth/login/success?user=${userParam}`);
+    res.redirect(`https://nodejsclusters-115724-0.cloudclusters.net/auth/login/success`,{
+      method: "GET",
+      credentials: "include",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Credentials": true,
+      },
+    });if (response.status === 200) {
+      const resObject = response.json();
+      res(resObject);
+    } else {
+      throw new Error("Authentication failed!");
+    }
   } catch (error) {
     console.error("Error redirecting:", error);
     res.status(500).json({
