@@ -20,7 +20,7 @@ router.get("/redirect", (req, res) => {
       const resObject = response.json();
       res(resObject);
     } else {
-      throw new Error("Authentication failed!");
+      res('dsfdfs')
     }
   } catch (error) {
     console.error("Error redirecting:", error);
