@@ -29,38 +29,6 @@ router.get("/login/success", async (req, res) => {
   }
 });
 
-router.get("/redirect", async (req, res) => {
-  try {
-    // Convert the user object to a JSON string and encode it as a query parameter
-    const userParam = encodeURIComponent(JSON.stringify(req.user));
-
-    // Make a GET request to the /login/success route with the userParam query parameter
-    const response = await fetch(`https://nodejsclusters-115724-0.cloudclusters.net/auth/login/success?user=${userParam}`, {
-      method: "GET",
-      credentials: "include",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-        "Access-Control-Allow-Credentials": true,
-      },
-    });
-
-    if (response.ok) {
-      const resObject = await response.json(); // Parse the response body as JSON
-      res.status(200).json(resObject); // Send the JSON response back to the client
-    } else {
-      throw new Error("Authentication failed!");
-    }
-  } catch (error) {
-    console.error("Error redirecting:", error);
-    res.status(500).json({
-      success: false,
-      message: "Internal server error",
-    });
-  }
-});
-
-
 
 router.get("/login/failed", (req, res) => {
   res.status(401).json({
