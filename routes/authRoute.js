@@ -4,10 +4,14 @@ const { generateJwt } = require("../passport");
 
 router.get("/login/success", async (req, res) => {
   try {
-    if (req.user) {
-      const token = await generateJwt(req.user.id, req.user.email, req.user.role);
+    // Retrieve the user object from the query parameter
+    const userParam = req.query.user;
+    const user = JSON.parse(decodeURIComponent(userParam));
 
-      const { password, ...userWithoutPassword } = req.user;
+    if (user) {
+      const token = await generateJwt(user.id, user.email, user.role);
+
+      const { password, ...userWithoutPassword } = user;
       res.status(200).json({
         success: true,
         message: "successfull",
@@ -29,10 +33,16 @@ router.get("/login/success", async (req, res) => {
   }
 });
 
+
 router.get("/redirect", (req, res) => {
-  // Redirect to the desired URL for data retrieval
-  res.redirect("https://nodejsclusters-115724-0.cloudclusters.net/auth/login/success");
-});
+  
+ 
+  // Redirect to the /login/success route with query parameters
+    
+   
+  const userParam = encodeURIComponent(req.user); // Encode user object as a query parameter
+    res.redirect(`https://nodejsclusters-115724-0.cloudclusters.net/auth/login/success?user=${userParam}`);
+  });
 
 
 router.get("/login/failed", (req, res) => {
