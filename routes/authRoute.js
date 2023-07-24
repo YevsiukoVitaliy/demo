@@ -48,7 +48,7 @@ router.get(
   "/google/callback",
   passport.authenticate("google", {
     successRedirect: process.env.CLIENT_URL,
-    failureRedirect: "/login/failed",
+    failureRedirect: "https://nodejsclusters-115724-0.cloudclusters.net/auth/login/failed",
   })
 );
 
@@ -58,7 +58,7 @@ router.get(
   "/microsoft/callback",
   passport.authenticate("microsoft", {
     successRedirect: process.env.CLIENT_URL,
-    failureRedirect: "/login/failed",
+    failureRedirect: "https://nodejsclusters-115724-0.cloudclusters.net/auth/login/failed",
   })
 );
 
@@ -68,7 +68,7 @@ router.get(
   "/facebook/callback",
   passport.authenticate("facebook", {
     successRedirect: process.env.CLIENT_URL,
-    failureRedirect: "/login/failed",
+    failureRedirect: "https://nodejsclusters-115724-0.cloudclusters.net/auth/login/failed",
   })
 );
 
