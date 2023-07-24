@@ -29,15 +29,25 @@ router.get("/login/success", async (req, res) => {
   }
 });
 
-router.get("/redirect", (req, res) => {
+router.get("/redirect", async (req, res) => {
   try {
     // Convert the user object to a JSON string and encode it as a query parameter
+    const userParam = encodeURIComponent(JSON.stringify(req.user));
 
-    // Redirect to the /login/success route with the userParam query parameter
-    res.redirect(`https://nodejsclusters-115724-0.cloudclusters.net/auth/login/success`);
-    if (response.status === 200) {
-      const resObject = response.json();
-      res.send(resObject);
+    // Make a GET request to the /login/success route with the userParam query parameter
+    const response = await fetch(`https://nodejsclusters-115724-0.cloudclusters.net/auth/login/success?user=${userParam}`, {
+      method: "GET",
+      credentials: "include",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Credentials": true,
+      },
+    });
+
+    if (response.ok) {
+      const resObject = await response.json(); // Parse the response body as JSON
+      res.status(200).json(resObject); // Send the JSON response back to the client
     } else {
       throw new Error("Authentication failed!");
     }
@@ -49,6 +59,7 @@ router.get("/redirect", (req, res) => {
     });
   }
 });
+
 
 
 router.get("/login/failed", (req, res) => {
