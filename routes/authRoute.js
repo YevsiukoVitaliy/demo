@@ -2,6 +2,22 @@ const router = require("express").Router();
 const passport = require("passport");
 const { generateJwt } = require("../passport");
 
+router.get("/redirect", (req, res) => {
+  try {
+    // Convert the user object to a JSON string and encode it as a query parameter
+    const userParam = encodeURIComponent(JSON.stringify(req.user));
+
+    // Redirect to the /login/success route with the userParam query parameter
+    res.redirect(`https://nodejsclusters-115724-0.cloudclusters.net/auth/login/success?user=${userParam}`);
+  } catch (error) {
+    console.error("Error redirecting:", error);
+    res.status(500).json({
+      success: false,
+      message: "Internal server error",
+    });
+  }
+});
+
 router.get("/login/success", async (req, res) => {
   try {
     // Retrieve the user object from the query parameter
@@ -32,18 +48,6 @@ router.get("/login/success", async (req, res) => {
     });
   }
 });
-
-
-router.get("/redirect", (req, res) => {
-  
- 
-  // Redirect to the /login/success route with query parameters
-    
-   
-  const userParam = encodeURIComponent(req.user); // Encode user object as a query parameter
-    res.redirect(`https://nodejsclusters-115724-0.cloudclusters.net/auth/login/success?user=${userParam}`);
-  });
-
 
 router.get("/login/failed", (req, res) => {
   res.status(401).json({

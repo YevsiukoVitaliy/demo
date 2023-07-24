@@ -93,11 +93,12 @@ app.use(passport.session());
 
 app.use(
   cors({
-    origin: process.env.CLIENT_URL,
+    origin: [process.env.CLIENT_URL, 'https://nodejsclusters-115724-0.cloudclusters.net/auth/redirect'],
     methods: 'GET,POST,PUT,DELETE',
     credentials: true,
   })
 );
+
 
 app.use('/auth', authRoute);
 
