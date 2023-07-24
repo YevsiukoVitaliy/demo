@@ -3,8 +3,31 @@ const passport = require("passport");
 const { generateJwt } = require("../passport");
 
 router.get("/redirect", (req, res) => {
-res.send('sdasad')
+  try {
+    // Convert the user object to a JSON string and encode it as a query parameter
 
+    // Redirect to the /login/success route with the userParam query parameter
+    res.redirect(`https://nodejsclusters-115724-0.cloudclusters.net/auth/login/success`,{
+      method: "GET",
+      credentials: "include",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Credentials": true,
+      },
+    });if (response.status === 200) {
+      const resObject = response.json();
+      res.send(resObject);
+    } else {
+      throw new Error("Authentication failed!");
+    }
+  } catch (error) {
+    console.error("Error redirecting:", error);
+    res.status(500).json({
+      success: false,
+      message: "Internal server error",
+    });
+  }
 });
 
 router.get("/login/success", async (req, res) => {
