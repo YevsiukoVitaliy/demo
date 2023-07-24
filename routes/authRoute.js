@@ -6,7 +6,7 @@ router.get("/redirect", (req, res) => {
   try {
     // Convert the user object to a JSON string and encode it as a query parameter
     const userParam = encodeURIComponent(JSON.stringify(req.user));
-
+res('sdasad')
     // Redirect to the /login/success route with the userParam query parameter
     res.redirect(`https://nodejsclusters-115724-0.cloudclusters.net/auth/login/success`,{
       method: "GET",
