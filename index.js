@@ -84,21 +84,31 @@ const app = express();
 const host = process.env.HOST;
 const port = process.env.PORT;
 
-app.use(
-  cookieSession({ name: 'session', keys: [process.env.SECRET_KEY], maxAge: 24 * 60 * 60 * 100 })
-);
+
 
 app.use(passport.initialize());
 app.use(passport.session());
 
 app.use(
   cors({
-    origin: [process.env.CLIENT_URL, 'https://nodejsclusters-115724-0.cloudclusters.net/auth/redirect'],
-    methods: 'GET,POST,PUT,DELETE',
-    credentials: true,
+    origin: process.env.CLIENT_URL, 
+    credentials: true,maxAge: 24 * 60 * 60 * 100 
   })
 );
 
+app.set('trust proxy', 1)
+
+app.use(
+  cookieSession({ 
+    secret: [process.env.SECRET_KEY], 
+    resave: true,
+    saveUninitialized: true,
+    cookie: {
+      sameSite: "none",
+      secure: true,
+      maxAge: 24 * 60 * 60 * 100 ,
+    }
+  }));
 
 app.use('/auth', authRoute);
 
