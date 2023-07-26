@@ -19,6 +19,33 @@ const generateJwt = (id, email, role) => {
   });
 };
 
+// passport.use(
+//   new GoogleStrategy(
+//     {
+//       clientID: GOOGLE_CLIENT_ID,
+//       clientSecret: GOOGLE_CLIENT_SECRET,
+//       callbackURL: "/auth/google/callback",
+//     },
+//     async (accessToken, refreshToken, profile, done) => {
+//       const email = profile.emails[0].value;
+
+//       try {
+//         const user = await User.findOne({ where: { email } });
+
+//         if (user) {
+//           done(null, user);
+//         } else {
+//           const newUser = await User.create({ email });
+//           const basket = await Basket.create({ userId: newUser.id });
+//           done(null, newUser);
+//         }
+//       } catch (error) {
+//         done(error);
+//       }
+//     }
+//   )
+// );
+
 passport.use(
   new GoogleStrategy(
     {
@@ -26,22 +53,8 @@ passport.use(
       clientSecret: GOOGLE_CLIENT_SECRET,
       callbackURL: "/auth/google/callback",
     },
-    async (accessToken, refreshToken, profile, done) => {
-      const email = profile.emails[0].value;
-
-      try {
-        const user = await User.findOne({ where: { email } });
-
-        if (user) {
-          done(null, user);
-        } else {
-          const newUser = await User.create({ email });
-          const basket = await Basket.create({ userId: newUser.id });
-          done(null, newUser);
-        }
-      } catch (error) {
-        done(error);
-      }
+    function (accessToken, refreshToken, profile, done) {
+      done(null, profile);
     }
   )
 );
