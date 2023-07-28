@@ -30,7 +30,7 @@ const generateJwt = (id, email, role) => {
   });
 };
 app.use(express.json());
-app.use(cors({ origin: 'http://localhost:3000', credentials: true }));
+app.use(cors({ origin: process.env.CLIENT_URL, credentials: true }));
 
 app.set('trust proxy', 1);
 
@@ -117,11 +117,11 @@ app.get('/auth/google', passport.authenticate('google'));
 app.get(
   '/auth/google/callback',
   passport.authenticate('google', {
-    failureRedirect: 'http://localhost:3000',
+    failureRedirect: process.env.CLIENT_URL,
     session: true,
   }),
   function (req, res) {
-    res.redirect('http://localhost:3000');
+    res.redirect(process.env.CLIENT_URL);
   }
 );
 
