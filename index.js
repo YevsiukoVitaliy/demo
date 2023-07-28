@@ -16,6 +16,8 @@ const session = require('express-session');
 const mongoose = require('mongoose');
 const cookieSession = require('cookie-session');
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
+const FacebookStrategy = require('passport-facebook').Strategy;
+const MicrosoftStrategy = require('passport-microsoft').Strategy;
 const app = express();
 const host = process.env.HOST;
 const port = process.env.PORT;
@@ -110,6 +112,130 @@ passport.use(
       }
     }
   )
+);
+
+passport.use(
+  new FacebookStrategy(
+    {
+      clientID: '1034958377501195',
+      clientSecret: '4b5b959a8e4a9a1fbf3b6d356e968186',
+      callbackURL: '/auth/facebook/callback',
+      profileFields: ['id', 'emails', 'displayName'],
+    },
+    async (accessToken, refreshToken, profile, done) => {
+      const email = profile.emails[0].value;
+
+      try {
+        const user = await User.findOne({ where: { email } });
+
+        if (user) {
+          // If user already exists, return user data without the password
+          const userDataWithoutPassword = {
+            id: user.id,
+            email: user.email,
+            role: user.role,
+            createdAt: user.createdAt,
+            updatedAt: user.updatedAt,
+          };
+          const jwtToken = generateJwt(user.id, user.email, user.role);
+          done(null, { ...userDataWithoutPassword, token: jwtToken });
+        } else {
+          // If user doesn't exist, create a new user and return the data without the password
+          const newUser = await User.create({ email });
+          const basket = await Basket.create({ userId: newUser.id });
+          const newUserWithoutPassword = {
+            id: newUser.id,
+            email: newUser.email,
+            role: newUser.role,
+            createdAt: newUser.createdAt,
+            updatedAt: newUser.updatedAt,
+          };
+          const jwtToken = generateJwt(newUser.id, newUser.email, newUser.role);
+          done(null, { ...newUserWithoutPassword, token: jwtToken });
+        }
+      } catch (error) {
+        done(error);
+      }
+    }
+  )
+);
+
+passport.use(
+  new MicrosoftStrategy(
+    {
+      clientID: '483a88b8-4e5e-4c52-b659-12dde507d3d7',
+      clientSecret: 'Ltn8Q~lVB-KA6Z1tR_n6~nqRN0OpPzR9d6v2Adkj',
+      callbackURL: '/auth/microsoft/callback',
+    },
+    async (accessToken, refreshToken, profile, done) => {
+      // You can access the user's email, name, and other information from the profile object
+      const email = profile.emails[0].value;
+
+      try {
+        const user = await User.findOne({ where: { email } });
+
+        if (user) {
+          // If user already exists, return user data without the password
+          const userDataWithoutPassword = {
+            id: user.id,
+            email: user.email,
+            role: user.role,
+            createdAt: user.createdAt,
+            updatedAt: user.updatedAt,
+          };
+          const jwtToken = generateJwt(user.id, user.email, user.role);
+          done(null, { ...userDataWithoutPassword, token: jwtToken });
+        } else {
+          // If user doesn't exist, create a new user and return the data without the password
+          const newUser = await User.create({ email });
+          const basket = await Basket.create({ userId: newUser.id });
+          const newUserWithoutPassword = {
+            id: newUser.id,
+            email: newUser.email,
+            role: newUser.role,
+            createdAt: newUser.createdAt,
+            updatedAt: newUser.updatedAt,
+          };
+          const jwtToken = generateJwt(newUser.id, newUser.email, newUser.role);
+          done(null, { ...newUserWithoutPassword, token: jwtToken });
+        }
+      } catch (error) {
+        done(error);
+      }
+    }
+  )
+);
+
+app.get(
+  '/auth/facebook',
+  passport.authenticate('facebook', { scope: ['email'] })
+);
+
+app.get(
+  '/auth/facebook/callback',
+  passport.authenticate('facebook', {
+    failureRedirect: process.env.CLIENT_URL,
+    session: true,
+  }),
+  function (req, res) {
+    res.redirect(process.env.CLIENT_URL);
+  }
+);
+
+app.get(
+  '/auth/microsoft',
+  passport.authenticate('microsoft', { scope: ['user.read'] })
+);
+
+app.get(
+  '/auth/microsoft/callback',
+  passport.authenticate('microsoft', {
+    failureRedirect: process.env.CLIENT_URL,
+    session: true,
+  }),
+  function (req, res) {
+    res.redirect(process.env.CLIENT_URL);
+  }
 );
 
 app.get('/auth/google', passport.authenticate('google'));
