@@ -164,7 +164,7 @@ passport.use(
   new MicrosoftStrategy(
     {
       clientID: '483a88b8-4e5e-4c52-b659-12dde507d3d7',
-      clientSecret: 'Ltn8Q~lVB-KA6Z1tR_n6~nqRN0OpPzR9d6v2Adkj',
+      clientSecret: '501dbe48-37a1-4302-8667-b900fcb9c1e6',
       callbackURL: '/auth/microsoft/callback',
     },
     async (accessToken, refreshToken, profile, done) => {
