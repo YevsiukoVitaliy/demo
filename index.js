@@ -1,4 +1,4 @@
-const https = require('https');
+const http = require('http'); // Use the http module instead of https
 const fs = require('fs');
 const express = require('express');
 const cors = require('cors');
@@ -10,7 +10,6 @@ const sequelize = require('./db/db');
 const { User, Basket } = require('./models/models');
 const router = require('./routes/index');
 const errorHandler = require('./middleware/ErrorHandlingMiddleware');
-const authRoute = require('./routes/authRoute');
 const session = require('express-session');
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
 const FacebookStrategy = require('passport-facebook').Strategy;
@@ -19,10 +18,10 @@ const app = express();
 const host = process.env.HOST;
 const port = process.env.PORT;
 const jwt = require('jsonwebtoken');
-const sslOptions = {
-  key: fs.readFileSync(path.join(__dirname, 'cert', 'key.pem')),
-  cert: fs.readFileSync(path.join(__dirname, 'cert', 'cert.pem')),
-};
+// const sslOptions = {
+//   key: fs.readFileSync(path.join(__dirname, 'cert', 'key.pem')),
+//   cert: fs.readFileSync(path.join(__dirname, 'cert', 'cert.pem')),
+// };
 const generateJwt = (id, email, role) => {
   return jwt.sign({ id, email, role }, process.env.SECRET_KEY, {
     expiresIn: '24h',
@@ -268,15 +267,16 @@ app.get('/getuser', (req, res) => {
   res.send(req.user);
 });
 
-const httpsServer = https.createServer(sslOptions, app);
+const httpServer = http.createServer(app);
 
 const start = async () => {
   try {
     await sequelize.authenticate();
     await sequelize.sync();
 
-    httpsServer.listen(port, host, () => {
-      console.log(`Сервер работает на хосте ${httpsServer.address().address}`);
+    // Listen on the desired HTTP port
+    httpServer.listen(port, host, () => {
+      console.log(`Server is running on http://${host}:${port}`);
     });
   } catch (e) {
     console.error(e);
